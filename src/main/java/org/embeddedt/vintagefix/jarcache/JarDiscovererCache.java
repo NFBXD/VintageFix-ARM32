@@ -4,8 +4,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.unsafe.UnsafeInput;
-import com.esotericsoftware.kryo.unsafe.UnsafeOutput;
 import net.minecraftforge.fml.common.discovery.asm.ASMModParser;
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation;
 import org.embeddedt.vintagefix.VintageFix;
@@ -72,7 +70,7 @@ public class JarDiscovererCache {
             return;
         }
 
-        try(Input is = new UnsafeInput(new BufferedInputStream(Files.newInputStream(DAT.toPath())))) {
+        try(Input is = new Input(new BufferedInputStream(Files.newInputStream(DAT.toPath())))) {
 
             byte magic0 = kryo.readObject(is, byte.class);
             byte version = kryo.readObject(is, byte.class);
@@ -121,7 +119,7 @@ public class JarDiscovererCache {
 
                 cache.entrySet().removeIf(e -> (epoch - e.getValue().lastAccessed) > MAX_AGE);
 
-                try(Output output = new UnsafeOutput(new BufferedOutputStream(Files.newOutputStream(DAT.toPath())))) {
+                try(Output output = new Output(new BufferedOutputStream(Files.newOutputStream(DAT.toPath())))) {
                     kryo.writeObject(output, MAGIC_0);
                     kryo.writeObject(output, VERSION);
                     kryo.writeObject(output, epoch);
