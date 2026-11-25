@@ -1,3 +1,4 @@
+* Fork: replaced Kryo UnsafeInput/UnsafeOutput with Input/Output to fix the SIGBUS crash on 32-bit ARM
 * Update to GTNH's newer Maven repository
 * Fix overflow in TurboStitcher on hardware with very large maximum texture sizes
 * Fix some non-model files being incorrectly picked up as models
