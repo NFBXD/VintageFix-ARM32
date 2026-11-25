@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.unsafe.UnsafeInput;
-import com.esotericsoftware.kryo.unsafe.UnsafeOutput;
 import com.google.common.hash.Hashing;
 
 import net.minecraft.launchwrapper.IClassNameTransformer;
@@ -175,7 +173,7 @@ public class TransformerCache {
         }
 
         if(DAT.exists()) {
-            try(Input is = new UnsafeInput(new BufferedInputStream(new FileInputStream(DAT)))) {
+            try(Input is = new Input(new BufferedInputStream(new FileInputStream(DAT)))) {
                 byte magic0 = kryo.readObject(is, byte.class);
                 byte version = kryo.readObject(is, byte.class);
 
@@ -237,7 +235,7 @@ public class TransformerCache {
         }
         LOGGER.info("Saving transformer cache");
         trimCache((long)MAX_SIZE_MB * 1024l * 1024l);
-        try(Output output = new UnsafeOutput(new BufferedOutputStream(new FileOutputStream(DAT)))) {
+        try(Output output = new Output(new BufferedOutputStream(new FileOutputStream(DAT)))) {
             kryo.writeObject(output, MAGIC_0);
             kryo.writeObject(output, VERSION);
             kryo.writeObject(output, transformerMap);
